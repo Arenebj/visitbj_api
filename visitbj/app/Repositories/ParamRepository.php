@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Interfaces\ParamRepositoryInterface;
+use App\Models\Activity;
 use App\Models\City;
 use App\Models\Place;
 use Exception;
@@ -43,7 +44,7 @@ class ParamRepository implements  ParamRepositoryInterface
             $place->longitude = $longitude;
             $place->latitude = $latitude;
             $place->cover = $fileName;
-            $place->id_city = $city;
+            $place->city_id = $city;
             $city->save();
 
         }catch(Exception $ex){
@@ -63,11 +64,29 @@ class ParamRepository implements  ParamRepositoryInterface
     }
 
     public function createActivity($name, $description, $price, $place){
+        try{
+            $activity = new Activity();
+            $activity->name = $name;
+            $activity->description = $description;
+            $activity->price = $price;
+            $activity->place_id = $place;
+            $activity->save();
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
 
     }
 
 
     public function getActivity(){
+        try{
+            $activities = Activity::all();
+            return $activities;
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
 
     }
 
