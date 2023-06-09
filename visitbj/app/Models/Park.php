@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $name
- * @property string $cover
  * @property string $description
  * @property int|null $limit_person
  * @property string $duration
@@ -26,7 +25,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int $theme_id
  * 
+ * @property Theme $theme
+ * @property Collection|MediaPark[] $media_parks
  * @property Collection|Planning[] $plannings
  * @property Collection|Reservation[] $reservations
  *
@@ -40,12 +42,12 @@ class Park extends Model
 		'limit_person' => 'int',
 		'start_date' => 'datetime',
 		'end_date' => 'datetime',
-		'price' => 'int'
+		'price' => 'int',
+		'theme_id' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
-		'cover',
 		'description',
 		'limit_person',
 		'duration',
@@ -53,8 +55,19 @@ class Park extends Model
 		'end_date',
 		'price',
 		'exclusion',
-		'type'
+		'type',
+		'theme_id'
 	];
+
+	public function theme()
+	{
+		return $this->belongsTo(Theme::class);
+	}
+
+	public function media_parks()
+	{
+		return $this->hasMany(MediaPark::class, 'pack_id');
+	}
 
 	public function plannings()
 	{

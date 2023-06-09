@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class PlaceController extends Controller
+class ThemeController extends Controller
 {
     protected ParamService $_paramService;
     protected FileService $_fileService;
@@ -20,22 +20,14 @@ class PlaceController extends Controller
         $this->_fileService = $fileService;
     }
 
-    public function  createPlace(Request $request){
+    public function  createTheme(Request $request){
         try{
-            $rData=$request->only(['name', 'description', 'longitude','latitude','city_id']);
+            $rData=$request->only(['name']);
             $validator=[
                 'name' => ['required'],
-                'description' => ['required'],
-                'longitude' => ['required'],
-                'latitude' => ['required'],
-                'city_id' => ['required','exists:cities,id'],
             ];
             $validationMessages = [
-                'name.required' => "Le nom de la ville est requis",
-                'description.required' => "Une description de la ville  est requise",
-                'longitude.required' => "La longitude de la ville est requise",
-                'latitude.required' => "La latitude de la ville est requise",
-                'city_id.required' => "L'identifiant de la ville est requise",
+                'name.required' => "Le nom est requis",
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
 
@@ -47,23 +39,16 @@ class PlaceController extends Controller
                 ], 400);
             }
             $name =  $rData['name'];
-            $description =  $rData['description'];
-            $longitude =  $rData['longitude'];
-            $latitude =  $rData['latitude'];
-            $city =  $rData['city_id'];
-
-              //save file
-            //todo: mettre dans un service
+                        //todo: mettre dans un service
             $file=$request->file('cover');
 
-             //do operation
-             $fileName = $this->_fileService->saveImage( $file);
-            //check error
-            if (!$fileName) {
-              throw new Exception("Veuillez fournir une photo de la ville");
-            }
-
-            $result = $this->_paramService->createPlace($name, $description, $longitude, $latitude, $city, $fileName);
+                        //do operation
+            $fileName = $this->_fileService->saveImage( $file);
+                       //check error
+                if (!$fileName) {
+                     throw new Exception("Veuillez fournir une photo du theme");
+                }
+            $result = $this->_paramService->createTheme($name, $fileName);
             if($result  === false){
                 return response()->json(
                     [
@@ -79,7 +64,6 @@ class PlaceController extends Controller
                         "message"=> "succes",
                     ],201
                     );
-
             }
 
         }catch(Exception $ex){
@@ -87,17 +71,17 @@ class PlaceController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue lors de l'ajout de la ville. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue. Veuillez réessayer",
                 ]
                 );
         }
     }
 
 
-    public function  getPlace(){
+    public function  getTheme(){
         try{
 
-            $result = $this->_paramService->getPlace();
+            $result = $this->_paramService->getTheme();
 
                 return response()->json(
                     [
@@ -111,7 +95,7 @@ class PlaceController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les destinations. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les catégories de park. Veuillez réessayer",
                 ]
                 );
         }

@@ -72,9 +72,9 @@ class CityController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
+                       "status"=> 200,
                         "message"=> "succes",
-                    ]
+                    ],201
                     );
 
             }

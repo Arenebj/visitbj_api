@@ -57,9 +57,9 @@ class ActivityController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
+                       "status"=> 200,
                         "message"=> "succes",
-                    ]
+                    ],201
                     );
 
             }
@@ -93,7 +93,7 @@ class ActivityController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les villes. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les activités. Veuillez réessayer",
                 ]
                 );
         }

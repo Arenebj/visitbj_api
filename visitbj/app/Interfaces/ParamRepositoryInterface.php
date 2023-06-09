@@ -11,6 +11,12 @@ interface ParamRepositoryInterface
     public function getPlace();
     public function getActivity();
     public function createActivity($name, $description, $price, $place);
+    public function createEvent($name, $description, $price, $place, $startDate, $endDate);
+    public function getEvent();
+    public function createTheme($name, $fileName);
+    public function getTheme();
+    public function addHotel($name, $description, $adresse, $city, $fileName);
+    public function getHotel();
 
     //
 }

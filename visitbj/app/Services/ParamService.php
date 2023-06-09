@@ -64,4 +64,67 @@ class ParamService
         }
 
     }
+
+    public function createEvent($name, $description, $price, $place, $startDate, $endDate){
+        try{
+            return  $this->_paramRepository->createEvent($name, $description, $price, $place, $startDate, $endDate);
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+    public function getEvent(){
+        try{
+            return  $this->_paramRepository->getEvent();
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+
+    public function createTheme($name, $fileName){
+        try{
+            return  $this->_paramRepository->createTheme($name, $fileName);
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+
+    public function getTheme(){
+        try{
+            return  $this->_paramRepository->getTheme();
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+    public function addHotel($name, $description, $adresse, $city, $fileName){
+        try{
+            return  $this->_paramRepository->addHotel($name, $description, $adresse, $city, $fileName);
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+    public function getHotel(){
+        try{
+            return  $this->_paramRepository->getHotel();
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
 }
