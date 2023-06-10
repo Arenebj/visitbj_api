@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('places', function (Blueprint $table) {
+        Schema::create('theme', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('cover');
-            $table->string('description');
-            $table->float('longitude');
-            $table->float('latitude');
-            $table->bigInteger('city_id')->unsigned();
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->string('label');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_place');
+        Schema::dropIfExists('theme');
     }
 };

@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('cover');
-            $table->string('description');
-            $table->float('longitude');
-            $table->float('latitude');
-            $table->timestamps();
+        if(Schema::hasColumn('hotels','city_id'))
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->dropForeign('hotels_city_id_foreign');
+            $table->dropColumn('city_id');
+
         });
     }
 
@@ -31,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_city');
+        Schema::table('hotel', function (Blueprint $table) {
+            //
+        });
     }
 };

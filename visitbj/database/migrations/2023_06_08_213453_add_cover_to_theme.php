@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hotels', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('cover');
-            $table->string('description');
-            $table->string('adresse');
-            $table->timestamps();
-        });
+        if (!Schema::hasColumn('theme', 'cover')){
+            Schema::table('theme', function (Blueprint $table) {
+                $table->string('cover');
+            });}
+
     }
 
     /**
@@ -30,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_hotels');
+        Schema::table('theme', function (Blueprint $table) {
+            //
+        });
     }
 };

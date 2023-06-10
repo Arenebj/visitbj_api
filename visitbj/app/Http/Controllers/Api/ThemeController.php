@@ -1,35 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ParamService;
 use App\Services\FileService;
-use Illuminate\Support\Facades\Log;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class ActivityController extends Controller
+class ThemeController extends Controller
 {
     protected ParamService $_paramService;
-    public function __construct(ParamService $paramService)
+    protected FileService $_fileService;
+    public function __construct(ParamService $paramService, FileService $fileService)
     {
         $this->_paramService = $paramService;
+        $this->_fileService = $fileService;
     }
-    public function  createActivity(Request $request){
+
+    public function  createTheme(Request $request){
         try{
-            $rData=$request->only(['name', 'description', 'price','place_id']);
+            $rData=$request->only(['name']);
             $validator=[
                 'name' => ['required'],
-                'description' => ['required'],
-                'price' => ['required'],
-                'place_id' => ['required', 'exists:places,id'],
             ];
             $validationMessages = [
-                'name.required' => "Le nom de la ville est requis",
-                'description.required' => "Une description de l'activité est requise",
-                'price.required' => "Le prix de l'activité est requis",
-                'place_id.required' => "L'identifiant de la destination est requis",
+                'name.required' => "Le nom est requis",
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
 
@@ -41,11 +39,16 @@ class ActivityController extends Controller
                 ], 400);
             }
             $name =  $rData['name'];
-            $description =  $rData['description'];
-            $price =  $rData['price'];
-            $place =  $rData['place_id'];
+                        //todo: mettre dans un service
+            $file=$request->file('cover');
 
-            $result = $this->_paramService->createActivity($name, $description, $price, $place);
+                        //do operation
+            $fileName = $this->_fileService->saveImage( $file);
+                       //check error
+                if (!$fileName) {
+                     throw new Exception("Veuillez fournir une photo du theme");
+                }
+            $result = $this->_paramService->createTheme($name, $fileName);
             if($result  === false){
                 return response()->json(
                     [
@@ -57,11 +60,10 @@ class ActivityController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
+                       "status"=> 200,
                         "message"=> "succes",
-                    ]
+                    ],201
                     );
-
             }
 
         }catch(Exception $ex){
@@ -69,17 +71,17 @@ class ActivityController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue lors de la création d'une activité. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue. Veuillez réessayer",
                 ]
                 );
         }
     }
 
 
-    public function  getActivity(){
+    public function  getTheme(){
         try{
 
-            $result = $this->_paramService->getActivity();
+            $result = $this->_paramService->getTheme();
 
                 return response()->json(
                     [
@@ -93,12 +95,10 @@ class ActivityController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les villes. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les catégories de park. Veuillez réessayer",
                 ]
                 );
         }
     }
 
-
-    //
 }

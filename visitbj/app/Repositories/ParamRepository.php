@@ -4,73 +4,30 @@ namespace App\Repositories;
 use App\Interfaces\ParamRepositoryInterface;
 use App\Models\Activity;
 use App\Models\City;
+use App\Models\Event;
+use App\Models\Hotel;
 use App\Models\Place;
 use Exception;
+use App\Models\Theme;
+use App\Models\Service;
+
+
 
 class ParamRepository implements  ParamRepositoryInterface
 {
 
-    public function createCity($name, $description, $longitude, $latitude, $fileName){
+
+    public function createService($name, $description, $price, $place,$city,$type ){
         try{
-            $city = new City();
-            $city->name = $name;
-            $city->description = $description;
-            $city->longitude = $longitude;
-            $city->latitude = $latitude;
-            $city->cover = $fileName;
-            $city->save();
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-    //
-
-    public function getCity(){
-        try{
-            $cities = City::all();
-            return $cities;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-
-    public function createPlace($name, $description, $longitude, $latitude, $city, $fileName){
-        try{
-            $place = new Place();
-            $place->name = $name;
-            $place->description = $description;
-            $place->longitude = $longitude;
-            $place->latitude = $latitude;
-            $place->cover = $fileName;
-            $place->city_id = $city;
-            $city->save();
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-
-    }
-
-    public function getPlace(){
-        try{
-            $places = Place::all();
-            return $places;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-
-    public function createActivity($name, $description, $price, $place){
-        try{
-            $activity = new Activity();
-            $activity->name = $name;
-            $activity->description = $description;
-            $activity->price = $price;
-            $activity->place_id = $place;
-            $activity->save();
+            $service = new Service();
+            $service->name = $name;
+            $service->description = $description;
+            $service->price = $price;
+            $service->place= $place;
+            $service->ville= $city;
+            $service->type= $type;
+            $service->save();
+            return true;
 
         }catch(Exception $ex){
             throw new Exception($ex);
@@ -79,10 +36,10 @@ class ParamRepository implements  ParamRepositoryInterface
     }
 
 
-    public function getActivity(){
+    public function getService(){
         try{
-            $activities = Activity::all();
-            return $activities;
+            $services = Service::all();
+            return $services;
 
         }catch(Exception $ex){
             throw new Exception($ex);
@@ -90,5 +47,54 @@ class ParamRepository implements  ParamRepositoryInterface
 
     }
 
+
+    public function createTheme($name, $fileName){
+        try{
+            $theme = new Theme();
+            $theme->label = $name;
+            $theme->cover = $fileName;
+            $theme->save();
+            return true;
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+
+    public function getTheme(){
+        try{
+            $themes = Theme::all();
+            return $themes;
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+    }
+
+    public function addHotel($name, $description, $adresse, $fileName){
+        try{
+            $hotel = new Hotel();
+            $hotel->name = $name;
+            $hotel->description = $description;
+            $hotel->adresse = $adresse;
+            $hotel->cover = $fileName;
+            $hotel->save();
+            return true;
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+    public function getHotel(){
+        try{
+            $hotels = Hotel::all();
+            return  $hotels;
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+    }
     //
 }

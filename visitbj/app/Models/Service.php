@@ -11,44 +11,43 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Activity
+ * Class Service
  * 
  * @property int $id
  * @property string $name
  * @property string $description
  * @property int $price
- * @property int $place_id
+ * @property string $type
+ * @property string $place
+ * @property string $city
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Place $place
- * @property Collection|ActivitiesDay[] $activities_days
+ * @property Collection|Step[] $steps
  *
  * @package App\Models
  */
-class Activity extends Model
+class Service extends Model
 {
-	protected $table = 'activities';
+	protected $table = 'services';
 
 	protected $casts = [
-		'price' => 'int',
-		'place_id' => 'int'
+		'price' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
 		'description',
 		'price',
-		'place_id'
+		'type',
+		'place',
+		'city'
 	];
 
-	public function place()
+	public function steps()
 	{
-		return $this->belongsTo(Place::class);
-	}
-
-	public function activities_days()
-	{
-		return $this->hasMany(ActivitiesDay::class);
+		return $this->belongsToMany(Step::class, 'step_service')
+					->withPivot('id')
+					->withTimestamps();
 	}
 }

@@ -7,53 +7,46 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Reservation
+ * Class UserPack
  * 
  * @property int $id
  * @property int $user_id
- * @property int $park_id
+ * @property int $pack_id
  * @property int|null $number_participant
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Park $park
+ * @property Pack $pack
  * @property User $user
- * @property Collection|RoomDetail[] $room_details
  *
  * @package App\Models
  */
-class Reservation extends Model
+class UserPack extends Model
 {
-	protected $table = 'reservation';
+	protected $table = 'user_pack';
 
 	protected $casts = [
 		'user_id' => 'int',
-		'park_id' => 'int',
+		'pack_id' => 'int',
 		'number_participant' => 'int'
 	];
 
 	protected $fillable = [
 		'user_id',
-		'park_id',
+		'pack_id',
 		'number_participant'
 	];
 
-	public function park()
+	public function pack()
 	{
-		return $this->belongsTo(Park::class);
+		return $this->belongsTo(Pack::class);
 	}
 
 	public function user()
 	{
 		return $this->belongsTo(User::class);
-	}
-
-	public function room_details()
-	{
-		return $this->hasMany(RoomDetail::class);
 	}
 }

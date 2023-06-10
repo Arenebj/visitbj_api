@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('step', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->integer('price');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
-            $table->bigInteger('place_id')->unsigned();
-            $table->foreign('place_id')->references('id')->on('places');
+            $table->integer('number');
+            $table->float('distance')->nullable();
+            $table->bigInteger('pack_id')->unsigned();
+            $table->foreign('pack_id')->references('id')->on('pack');
             $table->timestamps();
-
         });
     }
 
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_event');
+        Schema::dropIfExists('step');
     }
 };

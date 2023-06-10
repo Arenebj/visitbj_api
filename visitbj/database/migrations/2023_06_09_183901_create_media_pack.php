@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('plannings', function (Blueprint $table) {
+        Schema::create('media_park', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->float('distance')->nullable();
-            $table->bigInteger('park_id')->unsigned();
-            $table->foreign('park_id')->references('id')->on('parks');
+            $table->string('type');
+            $table->string('path');
+            $table->bigInteger('pack_id')->unsigned();
+            $table->foreign('pack_id')->references('id')->on('pack');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_plannings');
+        Schema::dropIfExists('media_pack');
     }
 };
