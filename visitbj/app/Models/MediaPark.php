@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Park $park
+ * @property Pack $pack
  *
  * @package App\Models
  */
@@ -37,8 +37,8 @@ class MediaPark extends Model
 		'pack_id'
 	];
 
-	public function park()
+	public function pack()
 	{
-		return $this->belongsTo(Park::class, 'pack_id');
+		return $this->belongsTo(Pack::class);
 	}
 }

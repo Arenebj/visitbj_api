@@ -11,39 +11,36 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Park
+ * Class Pack
  * 
  * @property int $id
  * @property string $name
  * @property string $description
  * @property int|null $limit_person
  * @property string $duration
- * @property Carbon|null $start_date
- * @property Carbon|null $end_date
  * @property int $price
- * @property string|null $exclusion
  * @property string $type
+ * @property int $theme_id
+ * @property int|null $ratings
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property int $theme_id
  * 
  * @property Theme $theme
  * @property Collection|MediaPark[] $media_parks
- * @property Collection|Planning[] $plannings
- * @property Collection|Reservation[] $reservations
+ * @property Collection|Step[] $steps
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
-class Park extends Model
+class Pack extends Model
 {
-	protected $table = 'parks';
+	protected $table = 'pack';
 
 	protected $casts = [
 		'limit_person' => 'int',
-		'start_date' => 'datetime',
-		'end_date' => 'datetime',
 		'price' => 'int',
-		'theme_id' => 'int'
+		'theme_id' => 'int',
+		'ratings' => 'int'
 	];
 
 	protected $fillable = [
@@ -51,12 +48,10 @@ class Park extends Model
 		'description',
 		'limit_person',
 		'duration',
-		'start_date',
-		'end_date',
 		'price',
-		'exclusion',
 		'type',
-		'theme_id'
+		'theme_id',
+		'ratings'
 	];
 
 	public function theme()
@@ -66,16 +61,18 @@ class Park extends Model
 
 	public function media_parks()
 	{
-		return $this->hasMany(MediaPark::class, 'pack_id');
+		return $this->hasMany(MediaPark::class);
 	}
 
-	public function plannings()
+	public function steps()
 	{
-		return $this->hasMany(Planning::class);
+		return $this->hasMany(Step::class);
 	}
 
-	public function reservations()
+	public function users()
 	{
-		return $this->hasMany(Reservation::class);
+		return $this->belongsToMany(User::class, 'user_pack')
+					->withPivot('id', 'number_participant')
+					->withTimestamps();
 	}
 }

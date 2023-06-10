@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events_day', function (Blueprint $table) {
+        Schema::create('media_park', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('planning_id')->unsigned();
-            $table->foreign('planning_id')->references('id')->on('plannings');
-            $table->bigInteger('event_id')->unsigned();
-            $table->foreign('event_id')->references('id')->on('events');
+            $table->string('type');
+            $table->string('path');
+            $table->bigInteger('pack_id')->unsigned();
+            $table->foreign('pack_id')->references('id')->on('pack');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_events_day');
+        Schema::dropIfExists('media_pack');
     }
 };

@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('pack', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->integer('limit_person')->nullable();
+            $table->string('duration');
             $table->integer('price');
-            $table->bigInteger('place_id')->unsigned();
-            $table->foreign('place_id')->references('id')->on('places');
+            $table->enum('type', ['standard', 'personalized']);
+            $table->bigInteger('theme_id')->unsigned();
+            $table->foreign('theme_id')->references('id')->on('theme');
+            $table->integer('ratings')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_activities');
+        Schema::dropIfExists('pack');
     }
 };

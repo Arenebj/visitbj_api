@@ -22,14 +22,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $role
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string $reference
+ * @property bool $deleted
  * 
- * @property Collection|Reservation[] $reservations
+ * @property Collection|Pack[] $packs
  *
  * @package App\Models
  */
 class User extends Model
 {
 	protected $table = 'users';
+
+	protected $casts = [
+		'deleted' => 'bool'
+	];
 
 	protected $hidden = [
 		'password'
@@ -41,11 +47,15 @@ class User extends Model
 		'password',
 		'email',
 		'phone_number',
-		'role'
+		'role',
+		'reference',
+		'deleted'
 	];
 
-	public function reservations()
+	public function packs()
 	{
-		return $this->hasMany(Reservation::class);
+		return $this->belongsToMany(Pack::class, 'user_pack')
+					->withPivot('id', 'number_participant')
+					->withTimestamps();
 	}
 }

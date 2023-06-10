@@ -1,41 +1,39 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ParamService;
 use App\Services\FileService;
-use Exception;
 use Illuminate\Support\Facades\Log;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 
-class PlaceController extends Controller
+class ActivityController extends Controller
 {
     protected ParamService $_paramService;
-    protected FileService $_fileService;
-    public function __construct(ParamService $paramService, FileService $fileService)
+    public function __construct(ParamService $paramService)
     {
         $this->_paramService = $paramService;
-        $this->_fileService = $fileService;
     }
-
-    public function  createPlace(Request $request){
+    public function  createService(Request $request){
         try{
-            $rData=$request->only(['name', 'description', 'longitude','latitude','city_id']);
+            $rData=$request->only(['name', 'description', 'price','place', 'city', 'type']);
             $validator=[
                 'name' => ['required'],
                 'description' => ['required'],
-                'longitude' => ['required'],
-                'latitude' => ['required'],
-                'city_id' => ['required','exists:cities,id'],
+                'price' => ['required'],
+                'place' => ['required'],
+                'city' => ['required'],
+                'type' => ['required'],
             ];
             $validationMessages = [
-                'name.required' => "Le nom de la ville est requis",
-                'description.required' => "Une description de la ville  est requise",
-                'longitude.required' => "La longitude de la ville est requise",
-                'latitude.required' => "La latitude de la ville est requise",
-                'city_id.required' => "L'identifiant de la ville est requise",
+                'name.required' => "Le nom du service est requis",
+                'description.required' => "Une description du service est requise",
+                'price.required' => "Le prix du service est requis",
+                'place.required' => "La place du service est requise",
+                'city.required' => "La ville est requise",
+                'type.required' => "Le type du service est requis",
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
 
@@ -48,22 +46,12 @@ class PlaceController extends Controller
             }
             $name =  $rData['name'];
             $description =  $rData['description'];
-            $longitude =  $rData['longitude'];
-            $latitude =  $rData['latitude'];
-            $city =  $rData['city_id'];
+            $price =  $rData['price'];
+            $place =  $rData['place'];
+            $city =  $rData['city'];
+            $type =  $rData['type'];
 
-              //save file
-            //todo: mettre dans un service
-            $file=$request->file('cover');
-
-             //do operation
-             $fileName = $this->_fileService->saveImage( $file);
-            //check error
-            if (!$fileName) {
-              throw new Exception("Veuillez fournir une photo de la ville");
-            }
-
-            $result = $this->_paramService->createPlace($name, $description, $longitude, $latitude, $city, $fileName);
+            $result = $this->_paramService->createService($name, $description, $price, $place, $city, $type);
             if($result  === false){
                 return response()->json(
                     [
@@ -87,17 +75,17 @@ class PlaceController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue lors de l'ajout de la ville. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue lors de la création d'une activité. Veuillez réessayer",
                 ]
                 );
         }
     }
 
 
-    public function  getPlace(){
+    public function  getService(){
         try{
 
-            $result = $this->_paramService->getPlace();
+            $result = $this->_paramService->getService();
 
                 return response()->json(
                     [
@@ -111,10 +99,12 @@ class PlaceController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les destinations. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les activités. Veuillez réessayer",
                 ]
                 );
         }
     }
 
+
+    //
 }

@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('cover');
             $table->string('description');
-            $table->bigInteger('city_id')->unsigned();
-            $table->foreign('city_id')->references('id')->on('cities');
             $table->string('adresse');
             $table->timestamps();
         });

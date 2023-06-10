@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasColumn('parks','cover'))
-        Schema::table('parks', function (Blueprint $table) {
-            $table->dropColumn('cover');
+        Schema::create('step', function (Blueprint $table) {
+            $table->id();
+            $table->integer('number');
+            $table->float('distance')->nullable();
+            $table->bigInteger('pack_id')->unsigned();
+            $table->foreign('pack_id')->references('id')->on('pack');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('parks', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('step');
     }
 };

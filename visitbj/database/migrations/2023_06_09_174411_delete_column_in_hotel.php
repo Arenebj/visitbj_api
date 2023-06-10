@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('media_park', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
-            $table->string('path');
-            $table->bigInteger('pack_id')->unsigned();
-            $table->foreign('pack_id')->references('id')->on('parks');
-            $table->timestamps();
+        if(Schema::hasColumn('hotels','city_id'))
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->dropForeign('hotels_city_id_foreign');
+            $table->dropColumn('city_id');
+
         });
     }
 
@@ -30,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media_park');
+        Schema::table('hotel', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -11,80 +11,25 @@ class ParamService
     {
         $this->_paramRepository = $paramRepository;
     }
-    //
-    public function createCity($name, $description, $longitude, $latitude, $fileName){
+
+    public function createService($name, $description, $price, $place,$city,$type ){
         try{
-            return  $this->_paramRepository->createCity($name, $description, $longitude, $latitude, $fileName);
-
-        }catch(Exception $ex){
-
-        }
-    }
-
-    public function getCity(){
-    try{
-        return  $this->_paramRepository->getCity();
-
-    }catch(Exception $ex){
-        throw new Exception($ex);
-    }}
-
-    public function createPlace($name, $description, $longitude, $latitude, $city, $fileName){
-        try{
-            return  $this->_paramRepository->createPlace($name, $description, $longitude, $latitude, $city, $fileName);
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-
-    }}
-
-    public function getPlace(){
-    try{
-        return  $this->_paramRepository->getPlace();
-
-    }catch(Exception $ex){
-        throw new Exception($ex);
-    }}
-
-    public function createActivity($name, $description, $price, $place){
-        try{
-            return  $this->_paramRepository->createActivity($name, $description, $price, $place);
+            return  $this->_paramRepository->createService($name, $description, $price, $place,$city,$type );
 
         }catch(Exception $ex){
             throw new Exception($ex);
         }
     }
 
-    public function getActivity(){
+    public function getService(){
         try{
-            return  $this->_paramRepository->getActivity();
+            return  $this->_paramRepository->getService();
 
         }catch(Exception $ex){
             throw new Exception($ex);
         }
 
     }
-
-    public function createEvent($name, $description, $price, $place, $startDate, $endDate){
-        try{
-            return  $this->_paramRepository->createEvent($name, $description, $price, $place, $startDate, $endDate);
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-
-    }
-
-    public function getEvent(){
-        try{
-            return  $this->_paramRepository->getEvent();
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-
-    }
-
 
     public function createTheme($name, $fileName){
         try{
@@ -107,9 +52,9 @@ class ParamService
 
     }
 
-    public function addHotel($name, $description, $adresse, $city, $fileName){
+    public function addHotel($name, $description, $adresse, $fileName){
         try{
-            return  $this->_paramRepository->addHotel($name, $description, $adresse, $city, $fileName);
+            return  $this->_paramRepository->addHotel($name, $description, $adresse, $fileName);
 
         }catch(Exception $ex){
             throw new Exception($ex);

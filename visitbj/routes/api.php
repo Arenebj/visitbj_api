@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PlaceController;
 use App\Http\Controllers\Api\PackController;
 use App\Http\Controllers\Api\ActivityController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,7 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register',[AuthController::class,'register']);
+
+Route::group(['prefix' => 'auth'], function () {
+    //login and register
+    Route::post('/register-user', [AuthController::class,'registerUser']);
+    Route::post('/login-user', [AuthController::class,'authenticateUser']);
+
+
+});//end
 
 
 Route::group(['prefix' => 'params'], function () {

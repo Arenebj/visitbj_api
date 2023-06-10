@@ -9,74 +9,24 @@ use App\Models\Hotel;
 use App\Models\Place;
 use Exception;
 use App\Models\Theme;
+use App\Models\Service;
+
 
 
 class ParamRepository implements  ParamRepositoryInterface
 {
 
-    public function createCity($name, $description, $longitude, $latitude, $fileName){
+
+    public function createService($name, $description, $price, $place,$city,$type ){
         try{
-            $city = new City();
-            $city->name = $name;
-            $city->description = $description;
-            $city->longitude = $longitude;
-            $city->latitude = $latitude;
-            $city->cover = $fileName;
-            $city->save();
-            return true;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-    //
-
-    public function getCity(){
-        try{
-            $cities = City::all();
-            return $cities;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-
-    public function createPlace($name, $description, $longitude, $latitude, $city, $fileName){
-        try{
-            $place = new Place();
-            $place->name = $name;
-            $place->description = $description;
-            $place->longitude = $longitude;
-            $place->latitude = $latitude;
-            $place->cover = $fileName;
-            $place->city_id = $city;
-            $place->save();
-            return true;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-
-    }
-
-    public function getPlace(){
-        try{
-            $places = Place::with('city')->get();
-            return $places;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-    }
-
-    public function createActivity($name, $description, $price, $place){
-        try{
-            $activity = new Activity();
-            $activity->name = $name;
-            $activity->description = $description;
-            $activity->price = $price;
-            $activity->place_id = $place;
-            $activity->save();
+            $service = new Service();
+            $service->name = $name;
+            $service->description = $description;
+            $service->price = $price;
+            $service->place= $place;
+            $service->ville= $city;
+            $service->type= $type;
+            $service->save();
             return true;
 
         }catch(Exception $ex){
@@ -86,10 +36,10 @@ class ParamRepository implements  ParamRepositoryInterface
     }
 
 
-    public function getActivity(){
+    public function getService(){
         try{
-            $activities = Activity::with('place')->get();
-            return $activities;
+            $services = Service::all();
+            return $services;
 
         }catch(Exception $ex){
             throw new Exception($ex);
@@ -97,31 +47,6 @@ class ParamRepository implements  ParamRepositoryInterface
 
     }
 
-    public function createEvent($name, $description, $price, $place, $startDate, $endDate){
-        try{
-            $event = new Event();
-            $event->name = $name;
-            $event->description = $description;
-            $event->price = $price;
-            $event->place_id = $place;
-            $event->start_date = $startDate;
-            $event->end_date = $endDate;
-            $event->save();
-            return true;
-
-        }catch(Exception $ex){
-            throw new Exception($ex);
-        }
-
-    }
-
-    public function getEvent(){
-    try{
-        $events = Event::with('place')->get();
-        return $events;
-    }catch(Exception $ex){
-        throw new Exception($ex);
-    }}
 
     public function createTheme($name, $fileName){
         try{
@@ -147,13 +72,12 @@ class ParamRepository implements  ParamRepositoryInterface
         }
     }
 
-    public function addHotel($name, $description, $adresse, $city, $fileName){
+    public function addHotel($name, $description, $adresse, $fileName){
         try{
             $hotel = new Hotel();
             $hotel->name = $name;
             $hotel->description = $description;
             $hotel->adresse = $adresse;
-            $hotel->city = $city;
             $hotel->cover = $fileName;
             $hotel->save();
             return true;
@@ -166,7 +90,7 @@ class ParamRepository implements  ParamRepositoryInterface
 
     public function getHotel(){
         try{
-            $hotels = Hotel::with('city')->get();
+            $hotels = Hotel::all();
             return  $hotels;
         }catch(Exception $ex){
             throw new Exception($ex);

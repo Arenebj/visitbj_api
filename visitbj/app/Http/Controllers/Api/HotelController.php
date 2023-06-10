@@ -23,36 +23,29 @@ class HotelController extends Controller
 
     public function addHotel(Request $request){
         try{
-            $rData=$request->only(['name', 'description', 'adresse','city_id']);
+            $rData=$request->only(['name', 'description', 'adresse']);
             $validator=[
                 'name' => ['required'],
                 'description' => ['required'],
                 'adresse' => ['required'],
-                'city_id' => ['required','exists:cities,id'],
             ];
             $validationMessages = [
                 'name.required' => "Le nom de la ville est requis",
                 'description.required' => "Une description de la ville  est requise",
                 'adresse.required' => "L'adresse de l'hotel est requis",
-                'city_id.required' => "L'identifiant de la ville est requis",
-                'city_id.exists' => "L'identifiant de la ville est requis",
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
 
             if ($validatorResult->fails()) {
                 return response()->json([
-                    'data' => $validatorResult->errors()->first(),
-                   'status' => false,
+                    'succcess' => false,
                     'message' => $validatorResult->errors()->first(),
                 ], 400);
             }
             $name =  $rData['name'];
             $description =  $rData['description'];
             $adresse =  $rData['adresse'];
-            $city =  $rData['city_id'];
 
-              //save file
-            //todo: mettre dans un service
             $file=$request->file('cover');
 
              //do operation
@@ -62,20 +55,19 @@ class HotelController extends Controller
               throw new Exception("Veuillez fournir une photo de l'hotel");
             }
 
-            $result = $this->_paramService->addHotel($name, $description, $adresse, $city, $fileName);
+            $result = $this->_paramService->addHotel($name, $description, $adresse, $fileName);
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
-                        "message"=> "error",
+                        "success"=> false,
+                        "message"=> "Une erreur est survenue lors de l'ajout de la ville. Veuillez réessayer",
                     ]
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "success"=> true,
+                        "message"=> "L'hôtel a été enregistré avec succès.",
                     ],201
                     );
 
@@ -85,7 +77,7 @@ class HotelController extends Controller
             log::error($ex->getMessage());
             return response()->json(
                 [
-                   "status"=> false,
+                   "success"=> false,
                     "message"=> "Une erreur est survenue lors de l'ajout de la ville. Veuillez réessayer",
                 ]
                 );
@@ -93,15 +85,15 @@ class HotelController extends Controller
     }
 
 
-    public function  getCity(){
+    public function  getHotel(){
         try{
 
-            $result = $this->_paramService->getCity();
+            $result = $this->_paramService->getHotel();
 
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
+                        "success"=> true,
                         "message"=> "succes",
                     ]
                     );
@@ -110,7 +102,7 @@ class HotelController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les villes. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les hotels. Veuillez réessayer",
                 ]
                 );
         }

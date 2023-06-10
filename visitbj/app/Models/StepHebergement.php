@@ -10,30 +10,30 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class HotelsDay
- *
+ * Class StepHebergement
+ * 
  * @property int $id
- * @property int $planning_id
+ * @property int $step_id
  * @property int $hotel_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
+ * 
  * @property Hotel $hotel
- * @property Planning $planning
+ * @property Step $step
  *
  * @package App\Models
  */
-class HotelsDay extends Model
+class StepHebergement extends Model
 {
-	protected $table = 'hotels_day';
+	protected $table = 'step_hebergement';
 
 	protected $casts = [
-		'planning_id' => 'int',
+		'step_id' => 'int',
 		'hotel_id' => 'int'
 	];
 
 	protected $fillable = [
-		'planning_id',
+		'step_id',
 		'hotel_id'
 	];
 
@@ -42,8 +42,8 @@ class HotelsDay extends Model
 		return $this->belongsTo(Hotel::class);
 	}
 
-	public function planning()
+	public function step()
 	{
-		return $this->belongsTo(Planning::class);
+		return $this->belongsTo(Step::class);
 	}
 }

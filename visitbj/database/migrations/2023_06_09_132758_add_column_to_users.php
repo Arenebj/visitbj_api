@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        if(!Schema::hasColumn('parks','theme_id'))
-        Schema::table('parks', function (Blueprint $table) {
-            $table->bigInteger('theme_id')->unsigned();
-            $table->foreign('theme_id')->references('id')->on('theme');
+        if(!Schema::hasColumn('users','reference'))
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('reference');
+        });
+        if(!Schema::hasColumn('users','deleted'))
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('deleted')->default(false);
         });
     }
 
@@ -27,7 +30,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('park', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

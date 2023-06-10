@@ -12,9 +12,9 @@ class OperationService
         $this->_operationRepository = $operationRepository;
     }
     //
-    public function compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $exclusion, $startDate, $endDate,$limitPerson){
+    public function compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $limitPerson){
         try{
-            return  $this->_operationRepository->compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $exclusion, $startDate, $endDate, $limitPerson);
+            return  $this->_operationRepository->compositionPark($name, $description, $price, $type, $plannings, $theme, $duration,$limitPerson);
 
         }catch(Exception $ex){
             throw new Exception($ex);

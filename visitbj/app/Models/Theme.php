@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * @property string $cover
  * 
- * @property Collection|Park[] $parks
+ * @property Collection|Pack[] $packs
  *
  * @package App\Models
  */
@@ -32,8 +32,8 @@ class Theme extends Model
 		'cover'
 	];
 
-	public function parks()
+	public function packs()
 	{
-		return $this->hasMany(Park::class);
+		return $this->hasMany(Pack::class);
 	}
 }

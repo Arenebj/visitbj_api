@@ -2,69 +2,52 @@
 
 namespace App\Repositories;
 use App\Interfaces\OperationRepositoryInterface;
-use App\Models\ActivitiesDay;
-use App\Models\Activity;
-use App\Models\Planning;
-use App\Models\City;
-use App\Models\Event;
-use App\Models\Park;
-use App\Models\EventsDay;
-use App\Models\DayHotel;
-use App\Models\HotelsDay;
+use App\Models\Pack;
 use App\Models\MediaPark;
-use App\Models\Reservation;
+use App\Models\Step;
+use App\Models\StepService;
+use App\Models\StepHebergement;
 use Exception;
-use App\Models\Theme;
+use App\Models\UserPack;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
 class OperationRepository implements  OperationRepositoryInterface
 {
-    public function compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $exclusion, $startDate, $endDate,$limitPerson ){
+    public function compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $limitPerson ){
         try{
             DB::beginTransaction();
             try{
 
-            $park = new Park();
+            $park = new Pack();
             $park->name = $name;
             $park->description = $description;
             $park->price = $price;
             $park->type = $type;
             $park->duration = $duration;
             $park->theme_id = $theme;
-            $park->exclusion = $exclusion;
-            $park->start_date = $startDate;
-            $park->end_date = $endDate;
             $park->save();
             foreach ($plannings as $planning){
-                $dayPark = new Planning();
-                $dayPark->number =$planning['number'];
-               // $dayPark->travel_time =$planning['travel_time'];
-                $dayPark->distance =$planning['distance'];
-                $dayPark->park_id = $park->id;
-                $dayPark->save();
+                $step = new Step();
+                $step->number =$planning['number'];
+                $step->distance =$planning['distance'];
+                $step->park_id = $park->id;
+                $step->save();
 
                 foreach ($planning['activities'] as $activity){
                     //activities in day
-                    $activityDay = new ActivitiesDay();
-                    $activityDay->planning_id =  $dayPark->id;
-                    $activityDay->activity_id =  $activity;
-                    $activityDay->save();
+                    $stepService= new StepService();
+                    $stepService->step_id =  $step->id;
+                    $stepService->service_id =  $activity;
+                    $stepService->save();
                 }
-                if(isset($planning['events'])){
-                    foreach ($planning['events'] as $event){
-                        $eventDay = new EventsDay();
-                        $eventDay->planning_id =  $dayPark->id;
-                        $eventDay->event_id =  $event;
-                        $eventDay->save();
-                    }
-                }
+
                 if(isset($planning['hotel'])){
-                $hotelDay = new HotelsDay();
-                $hotelDay->planning_id =  $dayPark->id;
-                $hotelDay->hotel_id =  $planning['hotel'];
-                $hotelDay->save();
+                    $stepHebergement= new StepHebergement();
+                    $stepHebergement->step_id =  $step->id;
+                    $stepHebergement->hotel_id =  $planning['hotel'];
+                    $stepService->save();
                 }};
                 DB::commit();
                 return true;
@@ -73,11 +56,7 @@ class OperationRepository implements  OperationRepositoryInterface
                 DB::rollback();
                 log::error( $ex->getMessage());
 
-
             }
-
-
-
         }catch(Exception $ex){
             throw new Exception($ex);
         }
@@ -87,7 +66,7 @@ class OperationRepository implements  OperationRepositoryInterface
     public function getPack()
     {
         try{
-            $packs = Park::with('theme','plannings.activities_days.activity','plannings.events_days.event','plannings.hotels_days.hotel','media_parks')->get();
+            $packs = Pack::with('theme','media_parks',"steps.step_hebergements","steps.services")->get();
             return $packs;
 
         }catch(Exception $ex){
@@ -97,7 +76,7 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function detailPack($idPack){
         try{
-            $packFound = Park::where('id',$idPack)->with('theme','plannings.activities_days.activity','plannings.events_days.event','plannings.hotels_days.hotel','media_parks')->first();
+            $packFound = Pack::where('id',$idPack)-with('theme','media_parks',"steps.step_hebergements","steps.services")->first();
             return $packFound;
 
         }catch(Exception $ex){
@@ -108,7 +87,7 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function searchPackByTheme($idTheme){
         try{
-            $packs =Park::where('therme_id',$idTheme)->with('theme','plannings.activities_days.activity','plannings.events_days.event','plannings.hotels_days.hotel','media_parks')->get();
+            $packs =Pack::where('therme_id',$idTheme)->with('theme','media_parks',"steps.step_hebergements","steps.services")->get();
 
         }catch(Exception $ex){
             throw new Exception($ex);
@@ -118,12 +97,12 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function reservationOfPack($userId, $packId, $nbrPerson){
         try{
-            $typePack = Park::where('id',$packId)->first()->type;
+            $typePack = Pack::where('id',$packId)->first()->type;
             if($typePack === 'fixed' && $nbrPerson !== null){
                 throw new Exception("Cest un pack de type fixe .Impossible d'effectuer une modificaction");
             }
 
-            $reservation = new Reservation();
+            $reservation = new UserPack();
             $reservation->user_id = $userId;
             $reservation->park_id = $packId;
 
