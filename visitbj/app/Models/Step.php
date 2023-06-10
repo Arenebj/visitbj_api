@@ -12,18 +12,19 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Step
- * 
+ *
  * @property int $id
  * @property int $number
  * @property float|null $distance
  * @property int $pack_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Pack $pack
  * @property Collection|StepHebergement[] $step_hebergements
  * @property Collection|Service[] $services
- *
+ * @property Collection|StepService[] $step_service
+
  * @package App\Models
  */
 class Step extends Model
@@ -47,15 +48,16 @@ class Step extends Model
 		return $this->belongsTo(Pack::class);
 	}
 
-	public function step_hebergements()
+	public function step_hebergement()
 	{
-		return $this->hasMany(StepHebergement::class);
+		return $this->hasOne(StepHebergement::class);
 	}
 
-	public function services()
+
+	public function step_service()
 	{
-		return $this->belongsToMany(Service::class, 'step_service')
-					->withPivot('id')
-					->withTimestamps();
+		return $this->hasMany(StepService::class);
 	}
+
+
 }

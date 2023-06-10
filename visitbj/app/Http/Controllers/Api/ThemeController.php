@@ -52,16 +52,15 @@ class ThemeController extends Controller
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
+                        "success"=> false,
                         "message"=> "error",
                     ]
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "success"=> true,
+                        "message"=> "Le theme a été enrégistré avec succes",
                     ],201
                     );
             }
@@ -86,8 +85,7 @@ class ThemeController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
-                        "message"=> "succes",
+                        "success"=> true,
                     ]
                     );
         }catch(Exception $ex){
@@ -95,7 +93,7 @@ class ThemeController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les catégories de park. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les catégories du pack. Veuillez réessayer",
                 ]
                 );
         }

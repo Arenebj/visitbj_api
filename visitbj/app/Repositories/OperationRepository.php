@@ -3,7 +3,7 @@
 namespace App\Repositories;
 use App\Interfaces\OperationRepositoryInterface;
 use App\Models\Pack;
-use App\Models\MediaPark;
+use App\Models\MediaPack;
 use App\Models\Step;
 use App\Models\StepService;
 use App\Models\StepHebergement;
@@ -19,23 +19,22 @@ class OperationRepository implements  OperationRepositoryInterface
         try{
             DB::beginTransaction();
             try{
-
-            $park = new Pack();
-            $park->name = $name;
-            $park->description = $description;
-            $park->price = $price;
-            $park->type = $type;
-            $park->duration = $duration;
-            $park->theme_id = $theme;
-            $park->save();
+            $pack = new Pack();
+            $pack->name = $name;
+            $pack->description = $description;
+            $pack->price = $price;
+            $pack->type = $type;
+            $pack->duration = $duration;
+            $pack->theme_id = $theme;
+            $pack->save();
             foreach ($plannings as $planning){
                 $step = new Step();
                 $step->number =$planning['number'];
                 $step->distance =$planning['distance'];
-                $step->park_id = $park->id;
+                $step->pack_id = $pack->id;
                 $step->save();
 
-                foreach ($planning['activities'] as $activity){
+                foreach ($planning['services'] as $activity){
                     //activities in day
                     $stepService= new StepService();
                     $stepService->step_id =  $step->id;
@@ -47,7 +46,7 @@ class OperationRepository implements  OperationRepositoryInterface
                     $stepHebergement= new StepHebergement();
                     $stepHebergement->step_id =  $step->id;
                     $stepHebergement->hotel_id =  $planning['hotel'];
-                    $stepService->save();
+                    $stepHebergement->save();
                 }};
                 DB::commit();
                 return true;
@@ -55,6 +54,8 @@ class OperationRepository implements  OperationRepositoryInterface
             }catch(Exception $ex){
                 DB::rollback();
                 log::error( $ex->getMessage());
+                return false;
+
 
             }
         }catch(Exception $ex){
@@ -66,7 +67,7 @@ class OperationRepository implements  OperationRepositoryInterface
     public function getPack()
     {
         try{
-            $packs = Pack::with('theme','media_parks',"steps.step_hebergements","steps.services")->get();
+            $packs = Pack::with('theme','media_packs',"steps.step_hebergement","steps.step_service.service")->get();
             return $packs;
 
         }catch(Exception $ex){
@@ -76,7 +77,7 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function detailPack($idPack){
         try{
-            $packFound = Pack::where('id',$idPack)-with('theme','media_parks',"steps.step_hebergements","steps.services")->first();
+            $packFound = Pack::where('id',$idPack)->with('theme','media_packs',"steps.step_hebergement","steps.step_service.service")->first();
             return $packFound;
 
         }catch(Exception $ex){
@@ -87,7 +88,8 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function searchPackByTheme($idTheme){
         try{
-            $packs =Pack::where('therme_id',$idTheme)->with('theme','media_parks',"steps.step_hebergements","steps.services")->get();
+            $packs =Pack::where('therme_id',$idTheme)->with('theme','media_packs',"steps.step_hebergement","steps.services.service")->get();
+            return $packs;
 
         }catch(Exception $ex){
             throw new Exception($ex);
@@ -124,7 +126,7 @@ class OperationRepository implements  OperationRepositoryInterface
             $extensionsVideos = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm', 'm4v', 'mpg', 'mpeg', '3gp', '3g2', 'rm', 'rmvb', 'swf', 'vob'];
 
 
-            $mediaPack = new MediaPark();
+            $mediaPack = new MediaPack();
             $mediaPack ->pack_id = $packId;
             $mediaPack ->path = $fileName;
 

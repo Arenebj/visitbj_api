@@ -2,11 +2,7 @@
 
 namespace App\Repositories;
 use App\Interfaces\ParamRepositoryInterface;
-use App\Models\Activity;
-use App\Models\City;
-use App\Models\Event;
 use App\Models\Hotel;
-use App\Models\Place;
 use Exception;
 use App\Models\Theme;
 use App\Models\Service;
@@ -24,7 +20,7 @@ class ParamRepository implements  ParamRepositoryInterface
             $service->description = $description;
             $service->price = $price;
             $service->place= $place;
-            $service->ville= $city;
+            $service->city= $city;
             $service->type= $type;
             $service->save();
             return true;
