@@ -3,12 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CityController;
-use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\ThemeController;
-use App\Http\Controllers\Api\PlaceController;
 use App\Http\Controllers\Api\PackController;
-use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\HotelController;
+
 
 
 /*
@@ -36,25 +35,25 @@ Route::group(['prefix' => 'auth'], function () {
 });//end
 
 
-Route::group(['prefix' => 'params'], function () {
+Route::group(['prefix' => 'admin'], function () {
     //login and register
-    Route::post('/new-activity', [ActivityController::class,'createActivity']);
-    Route::get('/activities',  [ActivityController::class,'getActivity']);
-    Route::post('/new-city', [CityController::class,'createCity']);
-    Route::get('/cities',  [CityController::class,'getCity']);
-    Route::post('/new-event', [EventController::class,'createEvent']);
-    Route::get('/events',  [EventController::class,'getEvent']);
+    Route::post('/new-service', [ServiceController::class,'createService']);
+    Route::get('/services',  [ServiceController::class,'getService']);
     Route::post('/new-theme',  [ThemeController::class,'createTheme']);
     Route::get('/themes',  [ThemeController::class,'getTheme']);
-    Route::post('/new-place',  [PlaceController::class,'createPlace']);
-    Route::get('/places',  [PlaceController::class,'getPlace']);
-
+    Route::post('/new-pack', [PackController::class,'compositionPark']);
+    Route::post('/new-media', [PackController::class,'addMediaToPack']);
+    Route::post('/new-hotel', [HotelController::class,'addHotel']);
+    Route::get('/hotels',  [ServiceController::class,'getService']);
 });//end
 
 
 Route::group(['prefix' => 'offer'], function () {
-    //login and register
-    Route::post('/new-pack', [PackController::class,'compositionPark']);
+    Route::get('/services',  [ServiceController::class,'getService']);
+    Route::get('/themes',  [ThemeController::class,'getTheme']);
+    Route::get('/hotels',  [HotelController::class,'getHotel']);
+
+    Route::post('/personalized-pack', [PackController::class,'compositionPark']);
     Route::get('/packs', [PackController::class,'getPack']);
     Route::post('/detail-pack', [PackController::class,'detailPack']);
     Route::post('/search-pack-by-category', [PackController::class,'searchPackByTheme']);

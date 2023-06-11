@@ -8,8 +8,9 @@ use App\Services\FileService;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Type\TrueType;
 
-class ActivityController extends Controller
+class ServiceController extends Controller
 {
     protected ParamService $_paramService;
     public function __construct(ParamService $paramService)
@@ -55,16 +56,15 @@ class ActivityController extends Controller
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
+                        "success"=> false,
                         "message"=> "error",
                     ]
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "success"=> True,
+                        "message"=> "Le service a été enregistré avec succès.",
                     ],201
                     );
 
@@ -75,7 +75,7 @@ class ActivityController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue lors de la création d'une activité. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue lors de la création d'un service. Veuillez réessayer",
                 ]
                 );
         }
@@ -90,8 +90,7 @@ class ActivityController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
-                        "message"=> "succes",
+                        "success"=> true,
                     ]
                     );
         }catch(Exception $ex){
@@ -99,7 +98,7 @@ class ActivityController extends Controller
             return response()->json(
                 [
                    "status"=> false,
-                    "message"=> "Une erreur est survenue pour lister les activités. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue pour lister les services. Veuillez réessayer",
                 ]
                 );
         }

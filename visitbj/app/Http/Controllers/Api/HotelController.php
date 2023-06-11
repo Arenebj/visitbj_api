@@ -78,7 +78,7 @@ class HotelController extends Controller
             return response()->json(
                 [
                    "success"=> false,
-                    "message"=> "Une erreur est survenue lors de l'ajout de la ville. Veuillez réessayer",
+                    "message"=> "Une erreur est survenue lors de l'ajout de l'hotel. Veuillez réessayer",
                 ]
                 );
         }

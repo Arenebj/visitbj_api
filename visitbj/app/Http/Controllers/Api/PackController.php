@@ -26,9 +26,6 @@ class PackController extends Controller
         try{
 
             $limitPerson = (null === $request->get("limit_person"))? null  : $request->get("limit_person") ;
-            $exclusion = (null === $request->get("exclusion"))? null  : $request->get("exclusion") ;
-            $startDate = (null === $request->get("start_date"))? null  : $request->get("start_date") ;
-            $endDate = (null === $request->get("end_date"))? null  : $request->get("end_date") ;
 
             $rData=$request->only(['name', 'description', 'type','price', 'duration','plannings', 'theme']);
 
@@ -42,13 +39,13 @@ class PackController extends Controller
                 'theme' => ['required','exists:theme,id'],
             ];
             $validationMessages = [
-                'name.required' => "Le nom de la ville est requis",
-                'description.required' => "Une description du park est requise",
-                'type.required' => "Le type du park est requis",
-                'price.required' => "Le prix du park  est requis",
-                'plannings.required' => "Le plan du park est requis",
-                'theme.required' => "Le theme du park est requis ",
-                'duration.required' => "La durée du park est requis ",
+                'name.required' => "Le nom du pack est requis",
+                'description.required' => "Une description du pack est requise",
+                'type.required' => "Le type du pack est requis",
+                'price.required' => "Le prix du pack  est requis",
+                'plannings.required' => "Le plan du pack est requis",
+                'theme.required' => "Le theme du pack est requis ",
+                'duration.required' => "La durée du pack est requis ",
 
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
@@ -68,20 +65,19 @@ class PackController extends Controller
             $theme =  $rData['theme'];
             $duration =  $rData['duration'];
 
-            $result = $this->_operationService->compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $exclusion, $startDate, $endDate, $limitPerson);
+            $result = $this->_operationService->compositionPark($name, $description, $price, $type, $plannings, $theme, $duration, $limitPerson);
             if($result  === false){
                 return response()->json(
                     [
                         "status"=> false,
-                        "message"=> "error",
+                        "message"=> "Une erreur est survenue lors de la création du pack. Veuillez réessayer",
                     ]
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "success"=> true,
+                        "message"=> "Le pack a été enregistré avec succès.",
                     ],201
                     );
             }
@@ -90,8 +86,8 @@ class PackController extends Controller
             log::error($ex->getMessage());
             return response()->json(
                 [
-                   "status"=> false,
-                    "message"=> "Une erreur est survenue lors de la création d'un évenement. Veuillez réessayer",
+                   "success"=> false,
+                    "message"=> "Une erreur est survenue lors de la création du pack. Veuillez réessayer",
                 ]
                 );
         }
@@ -107,8 +103,7 @@ class PackController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> true,
-                        "message"=> "succes",
+                        "success"=> true,
                     ]
                     );
         }catch(Exception $ex){
@@ -126,19 +121,18 @@ class PackController extends Controller
         try{
             $rData=$request->only(['pack_id']);
             $validator=[
-                'pack_id' => ['required',"exists:parks,id"],
+                'pack_id' => ['required',"exists:pack,id"],
             ];
             $validationMessages = [
-                'pack_id.required' => "L'identifiant du park est requis",
-                'pack_id.exists' => "L'identifiant du park n'est pas valide",
+                'pack_id.required' => "L'identifiant du pack est requis",
+                'pack_id.exists' => "L'identifiant du pack n'est pas valide",
 
             ];
             $validatorResult=Validator::make( $rData, $validator, $validationMessages);
 
             if ($validatorResult->fails()) {
                 return response()->json([
-                    'data' => $validatorResult->errors()->first(),
-                   'status' => false,
+                    'success' => false,
                     'message' => $validatorResult->errors()->first(),
                 ], 400);
             }
@@ -148,16 +142,16 @@ class PackController extends Controller
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
+                        "success"=> false,
                         "message"=> "error",
                     ],400
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "data"=> $result,
+                       "success"=> 200,
+
                     ],200
                     );
 
@@ -231,7 +225,7 @@ class PackController extends Controller
         try{$rData=$request->only(['user_id',"pack_id","nombre_of_participant"]);
             $validator=[
                 'user_id' => ['required',"exists:users,id"],
-                'pack_id' => ['required',"exists:parks,id"],
+                'pack_id' => ['required',"exists:pack,id"],
             ];
             $validationMessages = [
                 'user_id.required' => "L'identifiant de l'utilisateur est requis",
@@ -287,7 +281,7 @@ class PackController extends Controller
     public function addMediaToPack(Request $request){
         try{$rData=$request->only(["pack_id"]);
             $validator=[
-                'pack_id' => ['required',"exists:parks,id"],
+                'pack_id' => ['required',"exists:pack,id"],
             ];
             $validationMessages = [
                 'pack_id.required' => "L'identifiant du pack est requis",
@@ -322,16 +316,15 @@ class PackController extends Controller
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
+                        "success"=> false,
                         "message"=> "error",
                     ],400
                     );
             }else{
                 return response()->json(
                     [
-                        "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                        "success"=> true,
+                        "message"=> "success",
                     ],201
                     );
 

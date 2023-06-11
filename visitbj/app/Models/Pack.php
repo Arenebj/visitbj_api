@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Theme $theme
- * @property Collection|MediaPark[] $media_parks
+ * @property Collection|MediaPack[] $media_packs
  * @property Collection|Step[] $steps
  * @property Collection|User[] $users
  *
@@ -59,9 +59,9 @@ class Pack extends Model
 		return $this->belongsTo(Theme::class);
 	}
 
-	public function media_parks()
+	public function media_packs()
 	{
-		return $this->hasMany(MediaPark::class);
+		return $this->hasMany(MediaPack::class);
 	}
 
 	public function steps()
