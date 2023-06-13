@@ -1,0 +1,191 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": " OpenApi Documentation",
+        "description": " Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/celsia/visitbj/public/api/auth/register-user": {
+            "post": {
+                "tags": [
+                    "Register"
+                ],
+                "operationId": "2d12656cf283d033e7b3fece28f2a4cf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "hanane"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "celsia"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "hananecelsia"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "hananecelsia@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+229540757483"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Feminin"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "example": "2002-03-13"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Inscription de l'utilisateur"
+                    }
+                }
+            }
+        },
+        "/celsia/visitbj/public/api/auth/login-user": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "operationId": "a51bff36c3d96087a88f4433a27ed8e4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "hananecelsia"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "hananecelsia@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion ."
+                    }
+                }
+            }
+        },
+        "/celsia/visitbj/public/api/auth/send-reset-code": {
+            "post": {
+                "tags": [
+                    "Reset code"
+                ],
+                "operationId": "9dc27e252f9a00b7357c7da2cd93595c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mouftaouhanane@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Un code de confirmation a été envoyé à l'adresse pour vérifier son compte."
+                    }
+                }
+            }
+        },
+        "/celsia/visitbj/public/api/auth/verify-reset-code": {
+            "post": {
+                "tags": [
+                    "Verify reset code"
+                ],
+                "operationId": "1aabaef151cc902d6053ff43ad21e917",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mouftaouhanane@gmail.com"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "vhfvg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Comparer le code saisi par l'utilisateur avec le code généré et envoyé par e-mail."
+                    }
+                }
+            }
+        },
+        "/celsia/visitbj/public/api/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Reset password"
+                ],
+                "operationId": "caed0c6a8a7a52018432e64254d8587d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "mouftaouhanane@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nRTVGbdsxh"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Votre mot de passe a été modifié avec succes."
+                    }
+                }
+            }
+        }
+    }
+}

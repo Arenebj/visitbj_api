@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'mailers' => [
+    /*'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
@@ -78,7 +78,7 @@ return [
                 'log',
             ],
         ],
-    ],
+    ],*/
 
     /*
     |--------------------------------------------------------------------------
@@ -90,11 +90,14 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
+    'host' => env('MAIL_HOST', 'smtp.mailtrap.io'),
+
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'yemiapp@iwajutech.com'),
+        'name' => env('MAIL_FROM_NAME', 'Marketo'),
     ],
+
 
     /*
     |--------------------------------------------------------------------------

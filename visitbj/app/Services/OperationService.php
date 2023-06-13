@@ -52,14 +52,14 @@ class OperationService
         }
     }
 
-    public function reservationOfPack($userId, $packId, $nbrPerson){
+   /* public function reservationOfPack($userId, $packId, $nbrPerson){
         try{
             return $this->_operationRepository-> reservationOfPack($userId, $packId, $nbrPerson);
 
         }catch(Exception $ex){
             throw new Exception($ex);
         }
-    }
+    }*/
 
     public function addMediaToPack($packId, $fileName, $extension){
         try{

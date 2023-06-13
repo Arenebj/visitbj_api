@@ -30,9 +30,26 @@ Route::group(['prefix' => 'auth'], function () {
     //login and register
     Route::post('/register-user', [AuthController::class,'registerUser']);
     Route::post('/login-user', [AuthController::class,'authenticateUser']);
+    Route::post('/send-reset-code', [AuthController::class,'send_reset_code']);
+    Route::post('/verify-reset-code', [AuthController::class,'verify_reset_code']);
+    Route::post('/reset-password', [AuthController::class,'reset_password']);
+    Route::post('/generate-pin', [AuthController::class,'generatePin']);
+    Route::post('/verify-pin', [AuthController::class,'verifyPin']);
+
 
 
 });//end
+
+
+Route::group(['prefix' => 'dashboard'], function () {
+
+    Route::get('/packs', [PackController::class,'getPack']);
+    Route::get('/events',  [ServiceController::class,'']);
+    Route::post('/user-pack',  [ThemeController::class,'']);
+    Route::post('/user-count',  [ThemeController::class,'']);
+
+});//end
+
 
 
 Route::group(['prefix' => 'admin'], function () {
@@ -50,9 +67,10 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::group(['prefix' => 'offer'], function () {
     Route::get('/services',  [ServiceController::class,'getService']);
+    //theme
     Route::get('/themes',  [ThemeController::class,'getTheme']);
+    //hotes
     Route::get('/hotels',  [HotelController::class,'getHotel']);
-
     Route::post('/personalized-pack', [PackController::class,'compositionPark']);
     Route::get('/packs', [PackController::class,'getPack']);
     Route::post('/detail-pack', [PackController::class,'detailPack']);
