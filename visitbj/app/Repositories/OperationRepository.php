@@ -29,7 +29,7 @@ class OperationRepository implements  OperationRepositoryInterface
             $pack->save();
             foreach ($plannings as $planning){
                 $step = new Step();
-                $step->number =$planning['number'];
+                $step->number =$planning['day'];
                 $step->distance =$planning['distance'];
                 $step->pack_id = $pack->id;
                 $step->save();
@@ -88,7 +88,7 @@ class OperationRepository implements  OperationRepositoryInterface
 
     public function searchPackByTheme($idTheme){
         try{
-            $packs =Pack::where('therme_id',$idTheme)->with('theme','media_packs',"steps.step_hebergement","steps.services.service")->get();
+            $packs =Pack::where('theme_id',$idTheme)->with('theme','media_packs',"steps.step_hebergement","steps.services.service")->get();
             return $packs;
 
         }catch(Exception $ex){
@@ -97,7 +97,7 @@ class OperationRepository implements  OperationRepositoryInterface
     }
 
 
-    public function reservationOfPack($userId, $packId, $nbrPerson){
+    /*public function reservationOfPack($userId, $packId, $nbrPerson){
         try{
             $typePack = Pack::where('id',$packId)->first()->type;
             if($typePack === 'fixed' && $nbrPerson !== null){
@@ -117,7 +117,7 @@ class OperationRepository implements  OperationRepositoryInterface
             throw new Exception($ex);
         }
 
-    }
+    }*/
 
     public function addMediaToPack($packId, $fileName, $extension){
         try{
@@ -140,6 +140,20 @@ class OperationRepository implements  OperationRepositoryInterface
 
             $mediaPack ->save();
             return true;
+
+        }catch(Exception $ex){
+            throw new Exception($ex);
+        }
+
+    }
+
+    public function userPack($userId){
+        try{
+          $userPack = UserPack::where("user_id",$userId)->where("status",true)->with("pack.steps.step_hebergement","pack.steps.step_service","pack.theme","pack.media_pack")->get();
+          if($userPack ->isEmpty()){
+            throw new Exception("Aucune réservation faite pour cet utilisateur");
+          }
+          return $userPack;
 
         }catch(Exception $ex){
             throw new Exception($ex);

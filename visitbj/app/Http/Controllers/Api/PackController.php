@@ -195,7 +195,7 @@ class PackController extends Controller
             if($result  === false){
                 return response()->json(
                     [
-                        "status"=> false,
+                        "success"=> false,
                         "message"=> "error",
                     ],400
                     );
@@ -203,8 +203,8 @@ class PackController extends Controller
                 return response()->json(
                     [
                         "data"=> $result,
-                       "status"=> 200,
-                        "message"=> "succes",
+                       "success"=> true,
+
                     ],200
                     );
 
@@ -221,7 +221,7 @@ class PackController extends Controller
         }
     }
 
-    public function reservationOfPack(Request $request){
+    /*public function reservationOfPack(Request $request){
         try{$rData=$request->only(['user_id',"pack_id","nombre_of_participant"]);
             $validator=[
                 'user_id' => ['required',"exists:users,id"],
@@ -275,7 +275,7 @@ class PackController extends Controller
                 );
         }
 
-    }
+    }*/
 
 
     public function addMediaToPack(Request $request){
@@ -292,8 +292,7 @@ class PackController extends Controller
 
             if ($validatorResult->fails()) {
                 return response()->json([
-                    'data' => $validatorResult->errors()->first(),
-                   'status' => false,
+                   'success' => false,
                     'message' => $validatorResult->errors()->first(),
                 ], 400);
             }
@@ -329,6 +328,53 @@ class PackController extends Controller
                     );
 
             }
+
+        }catch(Exception $ex){
+            log::error($ex->getMessage());
+            return response()->json(
+                [
+                   "status"=> false,
+                    "message"=> "Une erreur est survenue. Veuillez réessayer",
+                ]
+                );
+        }
+
+    }
+
+
+
+
+
+    public function userPack(Request $request){
+        try{$rData=$request->only(["user_id"]);
+            $validator=[
+                'user_id' => ['required',"exists:users,reference"],
+            ];
+            $validationMessages = [
+                'user_id.required' => "La reference  de l'utilisateur est requis",
+                'user_id.exists' => "La reference  de l'utilisateur n'est pas valide",
+
+            ];
+            $validatorResult=Validator::make( $rData, $validator, $validationMessages);
+
+            if ($validatorResult->fails()) {
+                return response()->json([
+                   'success' => false,
+                    'message' => $validatorResult->errors()->first(),
+                ], 400);
+            }
+
+            $userId =  $rData['user_id'];
+
+            $result = $this->_operationService->userPack($userId);
+
+                return response()->json(
+                    [
+                        "success"=> true,
+                        "data"=> $result,
+                    ],400
+                    );
+
 
         }catch(Exception $ex){
             log::error($ex->getMessage());

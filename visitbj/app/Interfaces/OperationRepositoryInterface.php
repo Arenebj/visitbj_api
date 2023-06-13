@@ -7,7 +7,8 @@ interface OperationRepositoryInterface
     public function getPack();
     public function detailPack($idPack);
     public function searchPackByTheme($idTheme);
-    public function reservationOfPack($userId, $packId, $nbrPerson);
+  /*  public function reservationOfPack($userId, $packId, $nbrPerson);*/
     public function addMediaToPack($packId, $fileName, $extension);
+    public function userPack($userId);
     //
 }

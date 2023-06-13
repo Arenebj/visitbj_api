@@ -16,11 +16,11 @@ class AuthService
     }
 
      //register user
-     public function registerUser($lastName, $firstName, $email, $password, $phone){
+     public function registerUser($lastName, $firstName, $email, $password, $phone, $gender ,$birthday){
 
          try {
          //check on gender
-
+         $gender = strtoupper(trim($gender));
 
          //check on phone number
          //TODO: integrer le + au debut de chaque numero
@@ -32,17 +32,12 @@ class AuthService
             }
          }
 
-         //la longueur minimum du password doit etre 5 caracteres
-         if (strlen($password) < 5) {
-             throw new Exception("Veuillez entrer un mot de passe valide comportant un minimum de cinq caractères.");
-         }
-
          //hash password
          $password = Hash::make($password);
          $userUid =  (string) Str::orderedUuid();
 
          //register user
-         $creationResult = $this->_authRepository->registerUser($userUid,$lastName, $firstName, $email, $password, $phone);
+         $creationResult = $this->_authRepository->registerUser($userUid,$lastName, $firstName, $email, $password, $phone, $gender, $birthday);
 
          return $creationResult;
 
@@ -61,5 +56,39 @@ class AuthService
     }
 
 }//end authenticateUser
-    //
+
+
+public function send_reset_code($email){
+    try{
+        return $this->_authRepository->send_reset_code($email);
+    }catch(Exception $ex){
+       throw new Exception($ex);
+    }
 }
+
+
+public function verify_reset_code($code, $email){
+    try{
+        return $this->_authRepository->verify_reset_code($code, $email);
+    }catch(Exception $ex){
+       throw new Exception($ex);
+    }
+
+}
+
+
+public function reset_password($password, $email){
+    try{
+        return $this->_authRepository->reset_password($password, $email);
+    }catch(Exception $ex){
+        throw new Exception($ex);
+    }
+}
+
+
+  //
+}
+
+
+
+
